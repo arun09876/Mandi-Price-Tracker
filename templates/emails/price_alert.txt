@@ -1,0 +1,18 @@
+{% load humanize %}{% if lang == "te" %}నమస్కారం,
+
+{{ district }} జిల్లాలో {{ crop }} ధర మీ లక్ష్యం ₹{{ alert.target_price|intcomma }}/క్వింటాలును {% if alert.condition == "above" %}దాటింది{% else %}కంటే తగ్గింది{% endif %} ({{ date|date:"d M Y" }}):
+{% for p in hits %}
+- {{ p.market.name }}: ₹{{ p.modal_price|intcomma }} (కనిష్ఠ ₹{{ p.min_price|intcomma }}, గరిష్ఠ ₹{{ p.max_price|intcomma }}){% endfor %}
+
+అన్ని ధరలు: {{ site_url }}/?commodity={{ alert.commodity_id }}&district={{ alert.district|urlencode }}
+ఈ హెచ్చరిక ఆపడానికి: {{ site_url }}/alerts/stop/{{ alert.token }}/
+{% else %}Hello,
+
+{{ crop }} in {{ district }} is now {% if alert.condition == "above" %}above{% else %}below{% endif %} your target of ₹{{ alert.target_price|intcomma }}/quintal ({{ date|date:"d M Y" }}):
+{% for p in hits %}
+- {{ p.market.name }}: ₹{{ p.modal_price|intcomma }} (min ₹{{ p.min_price|intcomma }}, max ₹{{ p.max_price|intcomma }}){% endfor %}
+
+See all prices: {{ site_url }}/?commodity={{ alert.commodity_id }}&district={{ alert.district|urlencode }}
+Stop this alert: {{ site_url }}/alerts/stop/{{ alert.token }}/
+{% endif %}
+— Mandi Price Tracker (data: Agmarknet / data.gov.in)

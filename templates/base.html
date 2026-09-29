@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ T.app_name }}{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: "Inter", "Noto Sans Telugu", system-ui, sans-serif; }
+    .hero { background: linear-gradient(135deg, #7a4b0f, #c07a1a); color: #fff; }
+    .best-row { background: #eaf7ee !important; }
+  </style>
+</head>
+<body class="bg-body-tertiary">
+<nav class="navbar navbar-dark" style="background:#5c3a0c">
+  <div class="container">
+    <a class="navbar-brand fw-semibold" href="{% url 'home' %}"><i class="bi bi-basket2-fill"></i> {{ T.app_name }}</a>
+    <div class="btn-group btn-group-sm">
+      {% for code, label in LANGS.items %}
+        <a class="btn {% if code == lang %}btn-light{% else %}btn-outline-light{% endif %}" href="{% url 'set_language' code %}?next={{ request.get_full_path|urlencode }}">{{ label }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</nav>
+{% block hero %}{% endblock %}
+<main class="container py-4">
+  {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="container pb-4 small text-muted">{{ T.source }}</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
